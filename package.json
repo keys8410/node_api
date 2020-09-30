@@ -1,20 +1,24 @@
 {
-  "name": "rest",
+  "name": "rest-api",
   "version": "1.0.0",
   "description": "Criação de uma API REST com Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/keys8410/node_api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Yan Almeida Garcia",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/keys8410/node_api/issues"
   },
-  "homepage": "https://github.com/keys8410/node_api#readme"
+  "homepage": "https://github.com/keys8410/node_api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "swagger-ui-express": "^4.1.4"
+  }
 }
