@@ -8,7 +8,13 @@ router.get('/', (req, res, next) => {
 
 // insere um pedido
 router.post('/', (req, res, next) => {
-  res.status(200).send({ message: 'usando o POST dentro de rota de pedidos' });
+  const pedido = {
+    id_produto: req.body.id_produto,
+    quantidade: req.body.quantidade,
+  };
+  res
+    .status(200)
+    .send({ message: 'o pedido foi criado', pedidoCriado: pedido });
 });
 
 // retorna um pedido especifico
@@ -16,9 +22,7 @@ router.get('/:id_pedido', (req, res, next) => {
   const id = req.params.id_pedido;
 
   if (id === 'especial') {
-    res
-      .status(200)
-      .send({ message: 'retorna o GET de um pedido exclusivo', id });
+    res.status(200).send({ message: 'detalhes do pedido', id });
   }
 });
 

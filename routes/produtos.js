@@ -8,7 +8,16 @@ router.get('/', (req, res, next) => {
 
 // insere um produto
 router.post('/', (req, res, next) => {
-  res.status(200).send({ message: 'usando o POST dentro de rota de produtos' });
+  const { nome, preco } = req.body;
+
+  const produto = {
+    nome,
+    preco,
+  };
+
+  res
+    .status(201)
+    .send({ message: 'insere um produto', produtoCriado: produto });
 });
 
 // retorna um produto especifico
