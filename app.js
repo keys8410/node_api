@@ -27,6 +27,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/uploads', express.static('uploads'));
 app.use('/produtos', routeProdutos);
 app.use('/pedidos', routePedidos);
 
