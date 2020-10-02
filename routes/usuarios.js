@@ -16,7 +16,7 @@ router.post('/cadastro', (req, res, next) => {
         if (error) return res.status(500).send(error);
 
         if (result.length > 0)
-          return res.status(401).send({ message: 'Usuário já cadastrado' });
+          return res.status(409).send({ message: 'Usuário já cadastrado' });
 
         bcrypt.hash(senha, 10, (error, hash) => {
           if (error) return res.status(500).send(error);
