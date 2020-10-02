@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const routeProdutos = require('./routes/produtos');
 const routePedidos = require('./routes/pedidos');
+const routeUsuarios = require('./routes/usuarios');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); // apenas dados simples
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use('/uploads', express.static('uploads'));
 app.use('/produtos', routeProdutos);
 app.use('/pedidos', routePedidos);
+app.use('/usuarios', routeUsuarios);
 
 app.use((req, res, next) => {
   const error = new Error('Nenhuma rota encontrada.');
