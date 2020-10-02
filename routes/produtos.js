@@ -10,7 +10,23 @@ router.get('/', (req, res, next) => {
     conn.query('SELECT * FROM produtos', (error, result, fields) => {
       if (error) return res.status(400).send({ error });
 
-      return res.status(200).send({ response: result });
+      const response = {
+        total: result.length,
+        produtos: result.map((prod) => {
+          return {
+            id_produto: prod.id_produto,
+            produto: prod.nome_produto,
+            preco: prod.preco_produto,
+            url: `${process.env.URL_API}/produtos/${prod.id_produto}`,
+          };
+        }),
+        request: {
+          type: 'GET',
+          desc: 'Retorna todos os produtos',
+        },
+      };
+
+      return res.status(200).send({ response });
     });
   });
 });
@@ -31,10 +47,17 @@ router.post('/', (req, res, next) => {
 
         if (error) return res.status(400).send({ error });
 
-        res.status(201).send({
+        const response = {
           message: 'Produto inserido com sucesso.',
-          id_produto: result.insertId,
-        });
+          produto: { id_produto: result.id_produto, nome, preco },
+          url: `${process.env.URL_API}/produtos/${result.id_produto}`,
+          request: {
+            type: 'POST',
+            desc: 'Insere um produto.',
+          },
+        };
+
+        return res.status(201).send(response);
       },
     );
   });
@@ -51,12 +74,24 @@ router.get('/:id_produto', (req, res, next) => {
       'SELECT * FROM produtos WHERE id_produto = ?',
       [id_produto],
       (error, result, fields) => {
-        if (error) return res.status(400).send({ error });
-        console.log(result);
-        if (result.length === 0)
-          return res.status(404).send({ message: 'Produto não encontrado.' });
+        if (error) return res.status(404).send({ error });
 
-        return res.status(200).send({ response: result });
+        const response = {
+          produto: {
+            id_produto: result[0].id_produto,
+            nome: result[0].nome_produto,
+            preco: result[0].preco_produto,
+          },
+          url: `${process.env.URL_API}/produtos`,
+          request: {
+            type: 'GET',
+            desc: 'Retorna os detalhes de um único produto.',
+          },
+        };
+
+        if (result.length !== 0) return res.status(200).send(response);
+
+        return res.status(404).send({ message: 'Produto não encontrado.' });
       },
     );
   });
@@ -64,23 +99,34 @@ router.get('/:id_produto', (req, res, next) => {
 
 // edita um produto
 router.patch('/', (req, res, next) => {
-  const { nome_produto, preco_produto, id_produto } = req.body;
+  const { nome, preco, id } = req.body;
 
   mysql.getConnection((error, conn) => {
     if (error) return res.status(400).send({ error });
 
     conn.query(
       'UPDATE produtos SET nome_produto = ?, preco_produto = ? WHERE id_produto = ?',
-      [nome_produto, preco_produto, id_produto],
+      [nome, preco, id],
 
       (error, result, fields) => {
         conn.release();
+        console.log(result);
 
         if (error) return res.status(400).send({ error });
 
-        res.status(202).send({
-          message: 'Produto alterado com sucesso.',
-        });
+        const response = {
+          message: 'Produto atualizado com sucesso.',
+          produto: { id, nome, preco },
+          request: {
+            type: 'GET',
+            desc: 'Retorna os dados específicos de um produto.',
+            url: `${process.env.URL_API}/produtos/${id}`,
+          },
+        };
+
+        if (result.affectedRows !== 0) return res.status(202).send(response);
+
+        return res.status(404).send({ message: 'Produto não encontrado.' });
       },
     );
   });
@@ -102,9 +148,19 @@ router.delete('/', (req, res, next) => {
 
         if (error) return res.status(400).send({ error });
 
-        res.status(202).send({
-          message: 'Produto removido com sucesso.',
-        });
+        const response = {
+          message: 'Produto removido com sucesso',
+          request: {
+            type: 'POST',
+            desc: 'Insere um novo produto.',
+            url: `${process.env.URL_API}/produtos`,
+            body: { nome: 'String', preco: 'Float' },
+          },
+        };
+
+        if (result.affectedRows !== 0) return res.status(202).send(response);
+
+        return res.status(404).send({ message: 'Produto não encontrado.' });
       },
     );
   });
