@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-require('dotenv').config();
 
 const verifyLogin = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
