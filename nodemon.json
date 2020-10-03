@@ -1,10 +1,10 @@
 {
   "env": {
-    "MYSQL_USER": "root",
-    "MYSQL_PASS": "root",
-    "MYSQL_DATABASE": "ecommerce",
-    "MYSQL_HOST": "localhost",
-    "MYSQL_PORT": 3309,
+    "MYSQL_USER": "b428dad2ab2fb4",
+    "MYSQL_PASS": "a3996bf7",
+    "MYSQL_DATABASE": "heroku_f1a614ccf7b23be",
+    "MYSQL_HOST": "us-cdbr-east-02.cleardb.com",
+    "MYSQL_PORT": 3306,
     "JWT_KEY": "31fJUKW8o7Q2gMyswRh4AQrfH6irqW-7XIWz-SUlI332_OEf3Kbw8z2sYXxxl2lwLo2T-8BILTYbdEN6U_Nif68QeQh6V83pUOKsG-5-zbmV3IciiFputn8ONAjLXsQwIrqYfOWtQXrfkYapY3HHEiCmIWwhBlg4MWXjrUiKAXk"
   }
 }
