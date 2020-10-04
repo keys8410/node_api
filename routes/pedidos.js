@@ -1,4 +1,7 @@
 const express = require('express');
+
+const { verifyLogin } = require('../middleware/jwt');
+
 const {
   getPedidos,
   postPedidos,
@@ -7,16 +10,12 @@ const {
 } = require('../controllers/pedidos');
 const router = express.Router();
 
-// retorna todos os pedidos
 router.get('/', getPedidos);
 
-// insere um pedido
-router.post('/', postPedidos);
+router.post('/', verifyLogin, postPedidos);
 
-// retorna um pedido especifico
 router.get('/:id_pedido', getUniquePedido);
 
-// deleta um pedido
-router.delete('/', deletePedido);
+router.delete('/', verifyLogin, deletePedido);
 
 module.exports = router;
