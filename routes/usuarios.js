@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
+const { verifyLogin } = require('../middleware/jwt');
+
 const {
   postLogin,
   postCadastro,
   postDadosUsuario,
 } = require('../controllers/usuarios');
 
-router.post('/', postDadosUsuario);
+router.post('/', verifyLogin, postDadosUsuario);
 
 router.post('/cadastro', postCadastro);
 
