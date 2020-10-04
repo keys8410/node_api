@@ -7,6 +7,8 @@ const getProdutos = (req, res, next) => {
 
     const query = 'SELECT * FROM produtos';
     conn.query(query, (error, result, fields) => {
+      conn.release();
+
       if (error) return res.status(400).send({ error });
 
       const response = {
@@ -40,34 +42,29 @@ const postProduto = (req, res, next) => {
 
     const query =
       'INSERT INTO produtos (nome_produto, preco_produto, imagem_produto) VALUES (?, ?, ?)';
-    conn.query(
-      query,
-      [nome, preco, path],
+    conn.query(query, [nome, preco, path], (error, result, fields) => {
+      conn.release();
 
-      (error, result, fields) => {
-        conn.release();
+      if (error) return res.status(400).send({ error });
 
-        if (error) return res.status(400).send({ error });
+      const response = {
+        message: 'Produto inserido com sucesso.',
 
-        const response = {
-          message: 'Produto inserido com sucesso.',
+        produto: {
+          id_produto: result.id_produto,
+          nome,
+          preco,
+          src: path,
+        },
+        url: `${process.env.URL_API}/produtos`,
+        request: {
+          type: 'POST',
+          desc: 'Insere um produto.',
+        },
+      };
 
-          produto: {
-            id_produto: result.id_produto,
-            nome,
-            preco,
-            src: path,
-          },
-          url: `${process.env.URL_API}/produtos`,
-          request: {
-            type: 'POST',
-            desc: 'Insere um produto.',
-          },
-        };
-
-        return res.status(201).send(response);
-      },
-    );
+      return res.status(201).send(response);
+    });
   });
 };
 
@@ -79,6 +76,8 @@ const getUniqueProduto = (req, res, next) => {
 
     const query = 'SELECT * FROM produtos WHERE id_produto = ?';
     conn.query(query, [id_produto], (error, result, fields) => {
+      conn.release();
+
       if (error) return res.status(404).send({ error });
 
       const response = {
@@ -106,6 +105,8 @@ const patchProduto = (req, res, next) => {
   const { nome, preco, id } = req.body;
 
   mysql.getConnection((error, conn) => {
+    conn.release();
+
     if (error) return res.status(400).send({ error });
 
     const query =
@@ -142,6 +143,8 @@ const deleteProduto = (req, res, next) => {
   const { id_produto } = req.body;
 
   mysql.getConnection((error, conn) => {
+    conn.release();
+
     if (error) return res.status(400).send({ error });
 
     const query = 'DELETE FROM produtos WHERE id_produto = ?';

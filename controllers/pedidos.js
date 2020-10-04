@@ -2,6 +2,8 @@ const mysql = require('../mysql').pool;
 
 const getPedidos = (req, res, next) => {
   mysql.getConnection((error, conn) => {
+    conn.release();
+
     if (error) return res.status(400).send(error);
 
     const query = `SELECT pedidos.id_pedido,
@@ -44,6 +46,8 @@ const postPedidos = (req, res, next) => {
   const { id_produto, quantidade } = req.body;
 
   mysql.getConnection((error, conn) => {
+    conn.release();
+
     if (error) return res.status(400).send({ error });
 
     const queryId = 'SELECT * FROM produtos WHERE id_produto = ?';
@@ -86,6 +90,8 @@ const getUniquePedido = (req, res, next) => {
 
     const query = 'SELECT * FROM pedidos WHERE id_pedido = ?';
     conn.query(query, [req.params.id_pedido], (error, result, fields) => {
+      conn.release();
+
       if (error) return res.status(404).send({ error });
 
       const response = {
