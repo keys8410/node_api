@@ -3,6 +3,9 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger_output.json');
+
 const routeProdutos = require('./routes/produtos');
 const routePedidos = require('./routes/pedidos');
 const routeUsuarios = require('./routes/usuarios');
@@ -27,8 +30,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 app.use('/uploads', express.static('uploads'));
-app.use('/produtos', routeProdutos);
+app.use('/', routeProdutos);
 app.use('/pedidos', routePedidos);
 app.use('/usuarios', routeUsuarios);
 
