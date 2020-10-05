@@ -12,6 +12,19 @@ const {
   uploadImg,
 } = require('../controllers/produtos');
 
+/**
+ * @api {get} /signin Singin
+ * @apiGroup Sistema
+ *
+ * @apiSuccess {String} status Mensagem de acesso autorizado
+ *
+ * @apiSuccessExample {json} Sucesso
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "status": "Logado!"
+ *    }
+ *
+ */
 router.get('/', getProdutos);
 
 router.post('/', verifyLogin, uploadImg.single('imagem_produto'), postProduto);

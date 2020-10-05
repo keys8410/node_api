@@ -4,7 +4,8 @@
   "description": "Criação de uma API REST com Node.js",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "docs": "apidoc -i ./routes -o docs"
   },
   "repository": {
     "type": "git",
